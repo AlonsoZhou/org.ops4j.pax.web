@@ -20,13 +20,6 @@
 	id="testing-pax-web-jsf" version="3.0">
 	<display-name>JSF Demo</display-name>
 
-	<!-- 
-		FIXME This should not be required, but Jetty does not pick up the listener 
-		from a TLD at the moment. 
-	-->
-	<listener>
-		<listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-	</listener>
 
 	<servlet>
 		<servlet-name>FacesServlet</servlet-name>

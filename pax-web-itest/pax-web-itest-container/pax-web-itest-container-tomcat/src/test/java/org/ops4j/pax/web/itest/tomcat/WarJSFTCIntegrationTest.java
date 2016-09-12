@@ -42,7 +42,6 @@ import static org.ops4j.pax.exam.MavenUtils.asInProject;
  * @author Achim Nierbeck
  */
 @RunWith(PaxExam.class)
-@Ignore("Failes: can't find the EL factory -> [PAXWEB-929] should fix this")
 public class WarJSFTCIntegrationTest extends ITestBase {
 
 	private Bundle installWarBundle;

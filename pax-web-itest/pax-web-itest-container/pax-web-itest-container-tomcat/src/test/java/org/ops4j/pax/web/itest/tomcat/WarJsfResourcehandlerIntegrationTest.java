@@ -57,6 +57,7 @@ import java.util.Collection;
 import static org.junit.Assert.fail;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.web.itest.base.assertion.Assert.assertThat;
 
@@ -69,6 +70,8 @@ public class WarJsfResourcehandlerIntegrationTest extends ITestBase {
 	@Configuration
 	public Option[] config() {
 		return combine(configureTomcat(),
+				systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
+						.value("DEBUG"),
 				TestConfiguration.jsfBundlesWithDependencies(),
 				// Resources-Extender, Jsf-Resourcehandler and test-bundles
 				mavenBundle().groupId("org.ops4j.pax.web").artifactId("pax-web-resources-extender").versionAsInProject(),
@@ -115,38 +118,37 @@ public class WarJsfResourcehandlerIntegrationTest extends ITestBase {
 	 * 	<li>Check if application under test (jsf-application-myfaces) is started
 	 * 	<li>Test actual resource-handler
 	 * 		<ul>
-	 * 			<li>Test for occurence of 'Hello JSF' (jsf-application-myfaces)</li>
-	 * 			<li>Test for occurence of 'Standard Header' (jsf-resourcebundle)</li>
-	 * 			<li>Test for occurence of 'iceland.jpg' from library 'default' in version '2_0' (jsf-resourcebundle)</li>
-	 * 			<li>Test for occurence of 'Customized Footer' (jsf-resourcebundle)</li>
+	 * 			<li>Test for occurrence of 'Hello JSF' (jsf-application-myfaces)</li>
+	 * 			<li>Test for occurrence of 'Standard Header' (jsf-resourcebundle)</li>
+	 * 			<li>Test for occurrence of 'iceland.jpg' from library 'default' in version '2_0' (jsf-resourcebundle)</li>
+	 * 			<li>Test for occurrence of 'Customized Footer' (jsf-resourcebundle)</li>
 	 *          <li>Access a resource (image) via HTTP which gets loaded from a other bundle (jsf-resourcebundle)</li>
 	 * 		</ul>
 	 * 	</li>
 	 *  <li>Test localized resource
 	 * 	    <ul>
-	 * 			<li>Test for occurence of 'flag.png' from library 'layout' with default locale 'en' which resolves to 'iceland' (default in faces-config)</li>
-	 * 	        <li>Test for occurence of 'flag.png' from library 'layout' with default locale 'de' which resolves to 'germany'</li>
+	 * 			<li>Test for occurrence of 'flag.png' from library 'layout' with default locale 'en' which resolves to 'iceland' (default in faces-config)</li>
+	 * 	        <li>Test for occurrence of 'flag.png' from library 'layout' with default locale 'de' which resolves to 'germany'</li>
 	 * 	    </ul>
 	 * 	</li>
 	 * 	<li>Test resource-overide
 	 * 	    <ul>
 	 * 	        <li>Install another bundle (jsf-resourcebundle-override) which also serves  template/footer.xhtml</li>
-	 * 	        <li>Test for occurence of 'Overriden Footer' (jsf-resourcebundle-override)</li>
-	 * 			<li>Test for occurence of 'iceland.jpg' from library 'default' in version '3_0' (jsf-resourcebundle-override)</li>
+	 * 	        <li>Test for occurrence of 'Overriden Footer' (jsf-resourcebundle-override)</li>
+	 * 			<li>Test for occurrence of 'iceland.jpg' from library 'default' in version '3_0' (jsf-resourcebundle-override)</li>
 	 * 	        <li>Uninstall the previously installed bundle</li>
-	 * 	        <li>Test again, this time for occurence of 'Customized Footer' (jsf-resourcebundle)</li>
+	 * 	        <li>Test again, this time for occurrence of 'Customized Footer' (jsf-resourcebundle)</li>
 	 * 	    </ul>
 	 * 	</li>
 	 * 	<li>
 	 * 	    Test {@link OsgiResource#userAgentNeedsUpdate(FacesContext)}
 	 * 	    with an If-Modified-Since header
 	 * 	</li>
-	 * 	<li>Test servletmapping with prefix (faces/*) rather than extension for both, page and image serving</li>
+	 * 	<li>Test servlet-mapping with prefix (faces/*) rather than extension for both, page and image serving</li>
 	 * </ul>
 	 * </pre>
 	 */
 	@Test
-	@Ignore("[PAXWEB-929] should fix this")
 	public void testJsfResourceHandler() throws Exception {
 		final String pageUrl = "http://127.0.0.1:8282/osgi-resourcehandler-myfaces/index.xhtml";
 		final String imageUrl = "http://127.0.0.1:8282/osgi-resourcehandler-myfaces/javax.faces.resource/images/iceland.jpg.xhtml?type=osgi&ln=default&lv=2_0";
